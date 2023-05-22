@@ -1,6 +1,8 @@
-package com.app.bookstore.service.exception;
+package com.app.bookstore.service.exceptions;
 
 public class ObjectNotFoundException extends RuntimeException{
+	
+	private static final long serialVersionUID = 1L;
 
 	public ObjectNotFoundException(String message, Throwable cause) {
 		super(message, cause);
@@ -11,7 +13,4 @@ public class ObjectNotFoundException extends RuntimeException{
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
-
-	private static final long serialVersionUID = 1L;
-
 }

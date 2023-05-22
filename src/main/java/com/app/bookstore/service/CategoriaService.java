@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.app.bookstore.dtos.CategoriaDTO;
 import com.app.bookstore.model.Categoria;
 import com.app.bookstore.repositories.CategoriaRepository;
-import com.app.bookstore.service.exception.ObjectNotFoundException;
+import com.app.bookstore.service.exceptions.DataIntegrityViolationException;
+import com.app.bookstore.service.exceptions.ObjectNotFoundException;
+
 
 @Service
 public class CategoriaService {
@@ -21,7 +23,7 @@ public class CategoriaService {
 	public Categoria findById(Integer id) {
 		Optional<Categoria> obj = categoriaRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+				"Objeto não encontrado! Id: " + id + ", tipo: " + Categoria.class.getName())); 
 	}
 	
 	public List<Categoria> findAll(){
@@ -43,7 +45,16 @@ public class CategoriaService {
 
 	public void delete(Integer id) {
 		findById(id);
-		categoriaRepository.deleteById(id);
+		try {
+			
+			categoriaRepository.deleteById(id);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new com.app.bookstore.service.exceptions.DataIntegrityViolationException(
+					"Categoria não pode ser deletada! Possui livros associados");
+		
+		
+		}
 		
 	}
 
